@@ -1,0 +1,61 @@
+@use 'variables' as *;
+
+.home {
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-light;
+  padding: 24px 16px;
+
+  @media (min-width: $bp-tablet) {
+    padding: 40px 32px;
+  }
+
+  @media (min-width: $bp-desktop) {
+    padding: 48px 64px;
+  }
+
+  &__header {
+    margin-bottom: 32px;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+
+      @media (min-width: $bp-tablet) {
+        font-size: 2.4rem;
+      }
+
+      span {
+        color: $primary;
+      }
+    }
+
+    p {
+      color: $text-muted;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+
+    @media (min-width: $bp-tablet) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: $bp-desktop) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__loading,
+  &__error {
+    text-align: center;
+    color: $text-muted;
+    margin-top: 60px;
+    font-size: 1rem;
+  }
+}

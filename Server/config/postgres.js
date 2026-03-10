@@ -10,6 +10,7 @@ const pool = new Pool({
 });
 
 const connectPostgres = async () => {
+   console.log("PG URI:", process.env.POSTGRES_URI);
   try {
     const client = await pool.connect();
     console.log("PostgreSQL connected");
