@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
+import AttemptPage from './pages/AttemptPage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* Assignment attempt page coming next */}
+         <Route path="/assignment/:id" element={<AttemptPage />} />
       </Routes>
     </BrowserRouter>
   )

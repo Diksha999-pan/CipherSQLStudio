@@ -17,7 +17,8 @@ connectMongo();
 connectPostgres();
 
 app.use("/api/assignments", require("./routes/assignments"));
-
+app.use("/api/query", require("./routes/query"));     
+app.use("/api/hint", require("./routes/hint"));
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "CipherSQLStudio API running" });
 });
