@@ -43,21 +43,22 @@ function AttemptPage() {
     setRunning(false)
   }
 
-  const getHint = async () => {
-    setShowHint(true)
-    setHintLoading(true)
-    setHint(null)
-    try {
-      const res = await axios.post('http://localhost:5000/api/hint', {
-        question: assignment.question,
-        query
-      })
-      setHint(res.data.hint)
-    } catch {
-      setHint('Could not load hint. Please try again.')
-    }
-    setHintLoading(false)
+ const getHint = async () => {
+  setShowHint(true);
+  setHintLoading(true);
+  setHint(null);
+  try {
+    const res = await axios.post('http://localhost:5000/api/hint', {
+      question: assignment.question,
+      query,
+      tableSchemas: assignment.sampleTables  // ← add this line
+    });
+    setHint(res.data.hint);
+  } catch (err) {
+    setHint(err.response?.data?.error || 'Could not load hint. Please try again.');
   }
+  setHintLoading(false);
+};
 
   if (loading) return <div style={{color:'#94a3b8', padding:'40px', background:'#0f172a', minHeight:'100vh'}}>Loading...</div>
   if (!assignment) return <div style={{color:'#ef4444', padding:'40px', background:'#0f172a', minHeight:'100vh'}}>Assignment not found</div>
@@ -137,25 +138,32 @@ function AttemptPage() {
           </div>
 
           <div className="results">
-            <p className="results__heading">Results</p>
-            {!results && !resultError && <p className="results__empty">Run a query to see results</p>}
-            {resultError && <p className="results__error">{resultError}</p>}
-            {results && results.length === 0 && <p className="results__empty">Query ran successfully — no rows returned</p>}
-            {results && results.length > 0 && (
-              <table>
-                <thead>
-                  <tr>{Object.keys(results[0]).map(k => <th key={k}>{k}</th>)}</tr>
-                </thead>
-                <tbody>
-                  {results.map((row, i) => (
-                    <tr key={i}>
-                      {Object.values(row).map((v, j) => <td key={j}>{String(v)}</td>)}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
+  <p className="results__heading">Results</p>
+  {!results && !resultError && <p className="results__empty">Run a query to see results</p>}
+  {resultError && <p className="results__error">{resultError}</p>}
+  {results && results.length === 0 && <p className="results__empty">Query ran successfully — no rows returned</p>}
+  {results && results.length > 0 && (
+    <>
+      <table>
+        <thead>
+          <tr>{Object.keys(results[0]).map(k => <th key={k}>{k}</th>)}</tr>
+        </thead>
+        <tbody>
+          {results.map((row, i) => (
+            <tr key={i}>
+              {Object.values(row).map((v, j) => <td key={j}>{String(v ?? '-')}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {results.length === 100 && (
+        <p style={{ color: '#f59e0b', fontSize: '0.8rem', marginTop: '8px' }}>
+          ⚠️ Showing first 100 rows only
+        </p>
+      )}
+    </>
+  )}
+</div>
         </div>
       </div>
 

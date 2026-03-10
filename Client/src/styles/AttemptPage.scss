@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'variables' as *;
 
 .attempt {
@@ -282,7 +283,7 @@
     cursor: pointer;
     font-size: 0.85rem;
 
-    &:hover { background: lighten($border, 10%); }
+    &:hover { background: color.adjust($border, $lightness: 10%); }
   }
 
   &__loading {
