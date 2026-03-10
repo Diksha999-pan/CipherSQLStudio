@@ -1,0 +1,65 @@
+CipherSQLStudio
+A browser-based SQL learning platform where students practice SQL queries against pre-configured assignments with real-time execution and intelligent hints.
+
+Setup Instructions
+Prerequisites
+
+Node.js v18+
+PostgreSQL installed locally (or use Neon.tech for cloud)
+MongoDB Atlas account (free tier)
+Google Gemini API key (free at aistudio.google.com)
+
+1. Clone the repository
+bashgit clone https://github.com/Diksha999-pan/CipherSQLStudio.git
+cd ciphersqlstudio
+
+2. Backend Setup
+bashcd Server
+npm install
+
+Create a .env file inside Server
+
+PORT=5000
+CLIENT_URL=http://localhost:5173
+MONGO_URI=your_mongodb_atlas_connection_string
+POSTGRES_URI=postgresql://postgres:yourpassword@localhost:5432/ciphersqlstudio
+GEMINI_API_KEY=your_gemini_api_key
+Create the PostgreSQL database:
+bashpsql -U postgres
+sqlCREATE DATABASE ciphersqlstudio;
+
+Create tables and insert sample data (run in pgAdmin or psql):
+
+npm run dev
+You should see:
+Server running on port 5000
+MongoDB connected
+PostgreSQL connected
+
+3. Frontend Setup
+../Client
+npm install
+npm run dev
+Open http://localhost:5173 in your browser.
+
+Environment Variables
+Server/.env.example
+PORT=5000
+CLIENT_URL=http://localhost:5173
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/ciphersqlstudio
+POSTGRES_URI=postgresql://postgres:<password>@localhost:5432/ciphersqlstudio
+GEMINI_API_KEY=your_google_gemini_api_key
+Client/.env.example
+VITE_API_URL=http://localhost:5000
+
+
+Here's the plain text version you can paste anywhere:
+
+Tech Stack & Why
+React.js (Frontend) — Component-based structure makes it easy to split the UI into reusable pieces like AssignmentCard, the editor panel, and results panel. Vite is used as the build tool for fast development server and hot reloading.
+Vanilla SCSS (Styling) — Used SCSS variables, nesting, mixins, and BEM naming conventions instead of a CSS framework. This keeps full control over the design and follows the mobile-first responsive approach required (320px, 641px, 1024px, 1281px breakpoints).
+Monaco Editor — Same engine as VS Code. Gives students SQL syntax highlighting, proper indentation, and a familiar coding experience directly in the browser without any configuration.
+Node.js + Express.js (Backend) — Lightweight REST API server. Simple and straightforward for building focused APIs. Handles three routes — assignment listing, query execution, and hint generation.
+MongoDB Atlas (Assignments Database) — Assignment data has a flexible structure where each assignment has different tables, columns, and row counts. MongoDB's document model fits this naturally without needing fixed table schemas or migrations.
+PostgreSQL (Query Sandbox) — Students execute real SQL against real tables. PostgreSQL is the industry standard database that supports all SQL concepts students need to practice — JOINs, GROUP BY, subqueries, aggregates, and more.
+Google Gemini API (LLM Hints) — Free tier available without a credit card. Prompt is carefully engineered to send the assignment question, table schema, and student's current query so hints are contextual. The model is instructed to never write SQL or reveal the full answer — only guide the student toward the right approach.
